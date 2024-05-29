@@ -1,20 +1,25 @@
 "use strict";
 const error = document.getElementById("uv-error");
+const gif = document.getElementById('register-gif');
 const errorCode = document.getElementById("uv-error-code");
-const registerButton = document.getElementById("uv-register-sw");
 
+// Is the service worker registered?
 if (location.pathname.startsWith(__uv$config.prefix)) {
-  error.textContent = "Error: Not connected to Infrared proxy please connect by clicking below button.";
-  registerButton.classList.add("show");
-}
+  error.textContent = "The service worker is not registered. We will now make an attempt to register it.";
 
-registerButton.addEventListener("click", async () => {
+  // Register the service worker
   try {
-    await registerSW();
+    registerSW();
     location.reload();
   } catch (err) {
+    gif.style.display = 'none';
     error.textContent = "Failed to register service worker.";
     errorCode.textContent = err.toString();
-    registerButton.classList.remove("show");
   }
-});
+} else {
+  gif.style.display = 'none';
+  errorCode.textContent = "There was an issue with Infrared. You can get more information about this error in the console. It is likely that this is a network" +
+  "error. However please do not report this until you obtain the error code."
+}
+
+

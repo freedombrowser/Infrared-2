@@ -53,8 +53,7 @@ server.on("listening", () => {
   console.log(`\thttp://localhost:${address.port}`);
   console.log(`\thttp://${hostname()}:${address.port}`);
   console.log(
-    `\thttp://${
-      address.family === "IPv6" ? `[${address.address}]` : address.address
+    `\thttp://${address.family === "IPv6" ? `[${address.address}]` : address.address
     }:${address.port}`
   );
 });

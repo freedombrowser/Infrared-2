@@ -11,11 +11,6 @@
       name="description"
       content="Infrared is a highly sophisticated proxy used for evading internet censorship or accessing websites in a controlled sandbox using the power of service-workers. Unblock sites today!"
     />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: dark)"
-      content="#434c5e"
-    />
     <meta name="googlebot" content="noindex, nofollow, nosnippet" />
     <base href="/" />
     <link rel="shortcut icon" content="favicon.ico" />
@@ -23,29 +18,31 @@
   </head>
 
               <body>
+
+                <img id="register-gif" height="150px" width="150px" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" src="register.gif">
+
                 <div class="logo-wrapper left-margin">
-                  <h1>Infrared | Error</h1>
+                  <h1 style="text-align: center;">Infrared Proxy</h1>
+                  <hr>
                 </div>
                 <div class="desc left-margin">
-                  <p>The server could not route your request.</p>
+
+                  <p></p>
                   <p id="uv-error"></p>
                   <code id="uv-error-code"></code>
-                  <button id="uv-register-sw" value="Register service worker">
-                    Connect to Freedombrowser Infrared
-                  </button>
+
                 </div>
-                <!-- <footer>
-                  <a
-                    title="License information"
-                    href="credits.html"
-                    style="margin-left: auto"
-                    >Credits</a
-                  >
-                  <span>&copy; Freedombrowser 2023</span>
-                </footer> -->
                 <script src="uv/uv.bundle.js"></script>
                 <script src="uv/uv.config.js"></script>
                 <script src="register-sw.js"></script>
                 <script src="error.js"></script>
+
+            <footer class="footer">
+        <p style="color: grey;">&copy; Freedombrowser 2023-24</p>
+        <a href="https://stonklat.com">Stonklat.com</a>
+        <a href="https://freedombrowser.org">Freedombrowser.org</a>
+        <a href="https://yt.stonklat.com">YouTube Proxy</a>
+        <a href="mailto:admin@freedombrowser.org?subject=Infrared%20Proxy">Contact</a>
+    </footer>
   </body>
 </html>

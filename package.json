@@ -1,7 +1,7 @@
 {
-  "name": "uv-app",
-  "version": "1.0.0",
-  "description": "Ultraviolet instance",
+  "name": "Infrared",
+  "version": "1.2.1",
+  "description": "An Instance of Infrared. A simple TompHTTP Bare instance front-end.",
   "type": "module",
   "engines": {
     "npm": ">=7.0.0",
@@ -16,8 +16,8 @@
   "author": "",
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "@titaniumnetwork-dev/ultraviolet": "^2.0.0",
-    "@tomphttp/bare-server-node": "^2.0.0",
+    "@titaniumnetwork-dev/ultraviolet": "2.0.0",
+    "@tomphttp/bare-server-node": "2.0.0",
     "express": "^4.18.2"
   },
   "devDependencies": {
