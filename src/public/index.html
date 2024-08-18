@@ -39,7 +39,10 @@
   <body>
     <div title="Infrared Logo" class="flex-center logo-wrapper header-center">
       <img class="logo" src="ir.png" alt="Infrared" height="600" width="600" />
-      <h1>Infrared Proxy | inf.stonklat.com</h1>
+      <h1 id="ir-title">Infrared Proxy</h1>
+      <script type="text/javascript" async>
+        document.getElementById('ir-title').innerHTML = `Infrared Proxy | ${window.location.hostname}`
+      </script>
     </div>
     <div class="flex-center desc">
       <p>
@@ -50,13 +53,13 @@
 
     <form id="uv-form" class="flex-center">
       <select id="search-engine-select">
-        <option value="https://duckduckgo.com/?q=%s&k7=w&kt=e&k1=-1&kn=-1&kz=-1&k9=1a0dab&ko=s">DuckDuckGo (Recommended)</option>
+        <option value="https://duckduckgo.com/?q=%s&k7=w&kt=e&k1=-1&kn=-1&kz=-1&k9=1a0dab&ko=s%kae=-1">DuckDuckGo (Recommended)</option>
         <option value="https://search.leptons.xyz/searxng/?q=%s">SearXNG (Advanced)</option>
-        <option value="https://search.brave.com/search?q=%s">Brave Search (Broken)</option>
+        <option value="https://search.brave.com/search?q=%s">Brave Search</option>
         <option value="https://www.google.com/search?q=%s">Google (Slower)</option>
         <option value="https://www.bing.com/search?q=%s">Bing (Slower)</option>
       </select>
-      <input id="uv-search-engine" type="hidden" value="https://duckduckgo.com/?q=%s&k7=w&kt=e&k1=-1&kn=-1&kz=-1&k9=1a0dab&ko=s" />
+      <input id="uv-search-engine" type="hidden" value="https://duckduckgo.com/?q=%s&k7=w&kt=e&k1=-1&kn=-1&kz=-1&k9=1a0dab&ko=s%kae=-1" />
       <input id="uv-address" type="text" placeholder="Search or Enter URL" />
     </form>
     <p class="flex-center" style="color: indianred;">The transport is completely unencrypted so please do not enter any sensitive information on this page.</p>

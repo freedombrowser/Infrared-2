@@ -1,30 +1,53 @@
-import { createBareServer } from "@tomphttp/bare-server-node";
-import express from "express";
-import { createServer } from "node:http";
-import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
-import { join } from "node:path";
-import { hostname } from "node:os";
-import { fileURLToPath } from "url";
+import express from 'express';
+import { createServer } from 'node:http';
+import { createBareServer } from '@tomphttp/bare-server-node';
+import { uvPath } from '@titaniumnetwork-dev/ultraviolet';
+import { fileURLToPath } from 'url';
+import { hostname } from 'node:os';
+import cors from 'cors'; // Import the cors package
+import axios from 'axios';
+import { JSDOM } from 'jsdom'; // For parsing HTML
 
-const publicPath = fileURLToPath(new URL("./public", import.meta.url));
-const bare = createBareServer("/bare/");
+const publicPath = fileURLToPath(new URL('./public', import.meta.url));
+const bare = createBareServer('/bare/');
 const app = express();
+
+// Enable CORS for all origins
+app.use(cors());
 
 // Load our publicPath first and prioritize it over UV.
 app.use(express.static(publicPath));
 // Load vendor files last.
-// The vendor's uv.config.js won't conflict with our uv.config.js inside the publicPath directory.
-app.use("/uv/", express.static(uvPath));
+app.use('/uv/', express.static(uvPath));
 
-// Error for everything else
-app.use((req, res) => {
-  res.status(404);
-  res.sendFile(join(publicPath, "404.html"));
+
+// Define the /siteinfo route
+app.get('/siteinfo', async (req, res) => {
+  const { url } = req.query;
+
+  if (!url || typeof url !== 'string') {
+    return res.status(400).json({ error: 'Invalid URL parameter' });
+  }
+
+  try {
+    // Fetch the HTML content of the page
+    const response = await axios.get(url);
+    const html = response.data;
+
+    // Parse the HTML content to extract the title
+    const dom = new JSDOM(html);
+    const title = dom.window.document.querySelector('title')?.textContent || 'No title found';
+
+    res.json({ title });
+  } catch (error) {
+    console.error('Error fetching page:', error);
+    res.status(500).json({ error: 'Failed to fetch page' });
+  }
 });
 
 const server = createServer();
 
-server.on("request", (req, res) => {
+server.on('request', (req, res) => {
   if (bare.shouldRoute(req)) {
     bare.routeRequest(req, res);
   } else {
@@ -32,7 +55,7 @@ server.on("request", (req, res) => {
   }
 });
 
-server.on("upgrade", (req, socket, head) => {
+server.on('upgrade', (req, socket, head) => {
   if (bare.shouldRoute(req)) {
     bare.routeUpgrade(req, socket, head);
   } else {
@@ -40,30 +63,27 @@ server.on("upgrade", (req, socket, head) => {
   }
 });
 
-let port = parseInt(process.env.PORT || "");
+let port = parseInt(process.env.PORT || '');
 
 if (isNaN(port)) port = 8080;
 
-server.on("listening", () => {
+server.on('listening', () => {
   const address = server.address();
 
-  // by default we are listening on 0.0.0.0 (every interface)
-  // we just need to list a few
-  console.log("Listening on:");
+  console.log('Listening on:');
   console.log(`\thttp://localhost:${address.port}`);
   console.log(`\thttp://${hostname()}:${address.port}`);
   console.log(
-    `\thttp://${address.family === "IPv6" ? `[${address.address}]` : address.address
+    `\thttp://${address.family === 'IPv6' ? `[${address.address}]` : address.address
     }:${address.port}`
   );
 });
 
-// https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
 
 function shutdown() {
-  console.log("SIGTERM signal received: closing HTTP server");
+  console.log('SIGTERM signal received: closing HTTP server');
   server.close();
   bare.close();
   process.exit(0);
